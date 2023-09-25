@@ -1,4 +1,4 @@
-package org.example;
+package org.example.utils;
 
 import io.restassured.filter.Filter;
 import io.restassured.filter.FilterContext;

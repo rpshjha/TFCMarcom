@@ -1,10 +1,11 @@
-package org.example;
+package org.example.tests;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.example.utils.RestAssuredRequestFilter;
 import org.example.utils.ReadJson;
 import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeTest;
