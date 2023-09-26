@@ -1,15 +1,18 @@
-package org.example.tests;
+package org.omdb.tests;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import org.example.utils.RestAssuredRequestFilter;
-import org.example.utils.ReadJson;
+import org.omdb.utils.ReadJson;
+import org.omdb.utils.RestAssuredRequestFilter;
 import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import static com.omdb.OMDBParams.*;
+import static com.omdb.ValidOptions.TypeOfResultToReturn.series;
 
 /**
  * Unit test for simple App.
@@ -37,7 +40,7 @@ public class AppTest {
 
         ResponseBody responseBody = RestAssured
                 .given(requestSpecification)
-                .param("i", "tt0120338")
+                .param(aValidIMDbID, "tt0120338")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response();
@@ -48,7 +51,7 @@ public class AppTest {
     void searchByTitle() {
 
         ResponseBody responseBody = RestAssured.given(requestSpecification)
-                .param("t", "titanic")
+                .param(movieTitleToSearchForByTitle, "titanic")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response();
@@ -59,7 +62,8 @@ public class AppTest {
 
         ResponseBody responseBody = RestAssured
                 .given(requestSpecification)
-                .param("s", "tt0120338")
+                .param(movieTitleToSearchForByKeyword, "Hannibal")
+                .param(typeOfResultToReturn, series)
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response();

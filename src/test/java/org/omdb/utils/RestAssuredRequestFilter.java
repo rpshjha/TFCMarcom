@@ -1,4 +1,4 @@
-package org.example.utils;
+package org.omdb.utils;
 
 import io.restassured.filter.Filter;
 import io.restassured.filter.FilterContext;
