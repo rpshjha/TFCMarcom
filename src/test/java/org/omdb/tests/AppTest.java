@@ -1,15 +1,21 @@
 package org.omdb.tests;
 
+import com.omdb.pojo.RootResponse;
+import com.omdb.pojo.SearchResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.ResponseBody;
+import io.restassured.module.jsv.JsonSchemaValidator;
+import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.hamcrest.Matchers;
 import org.omdb.utils.ReadJson;
 import org.omdb.utils.RestAssuredRequestFilter;
-import org.hamcrest.Matchers;
+import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+
+import java.io.InputStream;
 
 import static com.omdb.OMDBParams.*;
 import static com.omdb.ValidOptions.TypeOfResultToReturn.series;
@@ -38,35 +44,58 @@ public class AppTest {
     @Test
     void searchById() {
 
-        ResponseBody responseBody = RestAssured
+        InputStream searchByIdSchema = getClass().getClassLoader()
+                .getResourceAsStream("searchByIdResponse.json");
+
+        ValidatableResponse validatableResponse = RestAssured
                 .given(requestSpecification)
                 .param(aValidIMDbID, "tt0120338")
                 .get()
                 .then().spec(responseSpecification)
-                .extract().response();
+                .and().assertThat().body(JsonSchemaValidator.matchesJsonSchema(searchByIdSchema));
 
+        RootResponse response = validatableResponse.and().extract()
+                .response().as(RootResponse.class);
+
+        Assert.assertTrue(response.getImdbID().equals("tt0120338"));
     }
 
     @Test
     void searchByTitle() {
 
-        ResponseBody responseBody = RestAssured.given(requestSpecification)
-                .param(movieTitleToSearchForByTitle, "titanic")
+        InputStream searchByIdSchema = getClass().getClassLoader()
+                .getResourceAsStream("searchByIdResponse.json");
+
+        ValidatableResponse validatableResponse = RestAssured.given(requestSpecification)
+                .param(movieTitleToSearchForByTitle, "We")
                 .get()
                 .then().spec(responseSpecification)
-                .extract().response();
+                .and().assertThat().body(JsonSchemaValidator.matchesJsonSchema(searchByIdSchema));
+
+        RootResponse response = validatableResponse.and().extract()
+                .response().as(RootResponse.class);
+
+        Assert.assertTrue(response.getTitle().contains("We"));
     }
 
     @Test
     void searchByKeyword() {
 
-        ResponseBody responseBody = RestAssured
+        InputStream searchByIdSchema = getClass().getClassLoader()
+                .getResourceAsStream("searchByKeywordResponse.json");
+
+        ValidatableResponse validatableResponse = RestAssured
                 .given(requestSpecification)
-                .param(movieTitleToSearchForByKeyword, "Hannibal")
+                .param(movieTitleToSearchForByKeyword, "Just")
                 .param(typeOfResultToReturn, series)
                 .get()
                 .then().spec(responseSpecification)
-                .extract().response();
+                .and().assertThat().body(JsonSchemaValidator.matchesJsonSchema(searchByIdSchema));
+
+        SearchResponse response = validatableResponse.and().extract()
+                .response().as(SearchResponse.class);
+
+        Assert.assertTrue(response.getSearch().get(0).getTitle().contains("Just"));
 
     }
 }

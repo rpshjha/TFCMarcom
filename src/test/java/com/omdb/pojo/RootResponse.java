@@ -1,59 +1,86 @@
 package com.omdb.pojo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class RootResponse {
 
     @JsonProperty("Title")
-    public String title;
+    private String title;
+
     @JsonProperty("Year")
-    public String year;
+    private String year;
+
     @JsonProperty("Rated")
-    public String rated;
+    private String rated;
+
     @JsonProperty("Released")
-    public String released;
+    private String released;
+
     @JsonProperty("Runtime")
-    public String runtime;
+    private String runtime;
+
     @JsonProperty("Genre")
-    public String genre;
+    private String genre;
+
     @JsonProperty("Director")
-    public String director;
+    private String director;
+
     @JsonProperty("Writer")
-    public String writer;
+    private String writer;
+
     @JsonProperty("Actors")
-    public String actors;
+    private String actors;
+
     @JsonProperty("Plot")
-    public String plot;
+    private String plot;
+
     @JsonProperty("Language")
-    public String language;
+    private String language;
+
     @JsonProperty("Country")
-    public String country;
+    private String country;
+
     @JsonProperty("Awards")
-    public String awards;
+    private String awards;
+
     @JsonProperty("Poster")
-    public String poster;
+    private String poster;
+
     @JsonProperty("Ratings")
-    public List<Rating> ratings;
+    private List<Rating> ratings;
+
     @JsonProperty("Metascore")
-    public String metascore;
+    private String metascore;
+
     @JsonProperty("imdbRating")
-    public String imdbRating;
+    private String imdbRating;
+
     @JsonProperty("imdbVotes")
-    public String imdbVotes;
+    private String imdbVotes;
+
     @JsonProperty("imdbID")
-    public String imdbID;
+    private String imdbID;
+
     @JsonProperty("Type")
-    public String type;
+    private String type;
+
     @JsonProperty("DVD")
-    public String dvd;
+    private String dvd;
+
     @JsonProperty("BoxOffice")
-    public String boxOffice;
+    private String boxOffice;
+
     @JsonProperty("Production")
-    public String production;
+    private String production;
+
     @JsonProperty("Website")
-    public String website;
+    private String website;
+
     @JsonProperty("Response")
     public String response;
+
 }

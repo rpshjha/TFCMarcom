@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$ref": "#/definitions/Welcome3",
+  "definitions": {
+    "Welcome3": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Search": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Search"
+          }
+        },
+        "totalResults": {
+          "type": "string",
+          "format": "integer"
+        },
+        "Response": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "Response",
+        "Search",
+        "totalResults"
+      ],
+      "title": "Welcome3"
+    },
+    "Search": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Title": {
+          "type": "string"
+        },
+        "Year": {
+          "type": "string"
+        },
+        "imdbID": {
+          "type": "string"
+        },
+        "Type": {
+          "$ref": "#/definitions/Type"
+        },
+        "Poster": {
+          "type": "string",
+          "format": "uri",
+          "qt-uri-protocols": [
+            "https"
+          ],
+          "qt-uri-extensions": [
+            ".jpg"
+          ]
+        }
+      },
+      "required": [
+        "Poster",
+        "Title",
+        "Type",
+        "Year",
+        "imdbID"
+      ],
+      "title": "Search"
+    },
+    "Type": {
+      "type": "string",
+      "enum": [
+        "series"
+      ],
+      "title": "Type"
+    }
+  }
+}

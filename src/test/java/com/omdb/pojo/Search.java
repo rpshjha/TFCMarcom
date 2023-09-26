@@ -1,19 +1,21 @@
 package com.omdb.pojo;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class Search {
 
-
     @JsonProperty("Title")
-    public String title;
+    private String title;
     @JsonProperty("Year")
-    public String year;
+    private String year;
     @JsonProperty("imdbID")
-    public String imdbID;
+    private String imdbID;
     @JsonProperty("Type")
-    public String type;
+    private String type;
     @JsonProperty("Poster")
-    public String poster;
+    private String poster;
 
 }
