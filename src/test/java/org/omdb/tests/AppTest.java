@@ -3,6 +3,8 @@ package org.omdb.tests;
 import com.omdb.pojo.ErrorResponse;
 import com.omdb.pojo.RootResponse;
 import com.omdb.pojo.SearchResponse;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.ValidatableResponse;
@@ -14,9 +16,8 @@ import org.testng.annotations.Test;
 import static com.omdb.OMDBParams.*;
 import static org.testng.Assert.assertNotNull;
 
-/**
- * Unit test for simple App.
- */
+@Epic("OMDB API Test")
+@Feature("Verify Basic Search Operations on API")
 public class AppTest extends BaseTest {
 
     @Test
