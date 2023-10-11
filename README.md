@@ -6,6 +6,7 @@ Libraries used
 * JAVA
 * REST ASSURED
 * TESTNG
+* ALLURE REPORT
 
 ### Prerequisites
 
@@ -51,4 +52,4 @@ For Windows, Allure is available from the Scoop commandline-installer. To instal
 
 Logs is generated at the below location
 
-    ./test-output/logs/QA_CODING_CHALLENGE.log
+    ./log_{currentTimeMills}.txt
