@@ -159,7 +159,7 @@ public class AppTest extends BaseTest {
                 .then().spec(responseSpecification)
                 .extract().response().as(ErrorResponse.class);
 
-        Assert.assertTrue(response.getError().contains("Error getting data."));
+        Assert.assertTrue(response.getError().contains("Error getting data."), "Error getting data");
     }
 
     @DataProvider(name = "getType")
