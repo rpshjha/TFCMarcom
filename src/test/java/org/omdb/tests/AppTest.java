@@ -3,8 +3,7 @@ package org.omdb.tests;
 import com.omdb.pojo.ErrorResponse;
 import com.omdb.pojo.RootResponse;
 import com.omdb.pojo.SearchResponse;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
+import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.ValidatableResponse;
@@ -20,7 +19,10 @@ import static org.testng.Assert.assertNotNull;
 @Feature("Verify Basic Search Operations on API")
 public class AppTest extends BaseTest {
 
-    @Test
+    @Test(description = "shouldSearchByTitleAndYear")
+    @Story("Search by Title and Year")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("verify the functionality of a search feature that allows users to search movie by Title")
     void shouldSearchByTitleAndYear() {
 
         ValidatableResponse validatableResponse = RestAssured.given(requestSpecification)
@@ -41,6 +43,9 @@ public class AppTest extends BaseTest {
     }
 
     @Test
+    @Story("Search by ID")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("verify the functionality of a search feature that allows users to search movie by OMDB ID")
     void shouldSearchById() {
 
         RootResponse byIdOrTitle = RestAssured.given(requestSpecification)
@@ -62,6 +67,9 @@ public class AppTest extends BaseTest {
     }
 
     @Test
+    @Story("Search by keyword")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("verify the functionality of a search feature that allows users to search movie by Keyword")
     void shouldSearchByKeyword() {
 
         SearchResponse searchByKeyword = RestAssured.given(requestSpecification)
@@ -77,6 +85,9 @@ public class AppTest extends BaseTest {
     }
 
     @Test(dataProvider = "getType")
+    @Story("Filter by Type")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("verify the functionality of a OMDB API to filter movie title by type")
     void shouldFilterByType(String type) {
 
         SearchResponse searchByKeyword = RestAssured.given(requestSpecification)
@@ -98,6 +109,9 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "verify that search result should be different on first and last page")
+    @Story("Search Pagination")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("verify the Pagination functionality of a OMDB API")
     void verifyPagination() {
 
         SearchResponse searchOnFirstPage = RestAssured.given(requestSpecification)
@@ -119,6 +133,9 @@ public class AppTest extends BaseTest {
     }
 
     @Test
+    @Story("Should Return Plot Based On Param")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("verify the functionality of a OMDB API to Return Plot Based On Param")
     void shouldReturnPlotBasedOnParam() {
 
         RootResponse shortPlot = RestAssured.given(requestSpecification)
@@ -139,6 +156,9 @@ public class AppTest extends BaseTest {
     }
 
     @Test
+    @Story("Should Return Error Without API Key")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("verify that OMDB Api Should Return Error Without API Key")
     public void shouldNotGetResponseWithoutApiKey() {
 
         ErrorResponse response = RestAssured.given()
@@ -152,6 +172,9 @@ public class AppTest extends BaseTest {
     }
 
     @Test
+    @Story("Should Get Error for invalid Omdb ID")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("verify that OMDB Api Should Return Error for a invalid OMDB ID")
     void shouldGetErrorForInvalidSearch() {
 
         ErrorResponse response = RestAssured.given(requestSpecification)
