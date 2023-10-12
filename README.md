@@ -55,7 +55,7 @@ Default TestNG reports can be accessed at
 
 Logs is generated at the below location
 
-    ./log_{currentTimeMills}.txt
+    ./log/log_{currentTimeMills}.txt
 
 ## Test Cases 
 

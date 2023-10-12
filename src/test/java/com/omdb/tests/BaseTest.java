@@ -22,7 +22,7 @@ public class BaseTest {
     @BeforeTest
     void setup() throws FileNotFoundException {
 
-        PrintStream fileOutPutStream = new PrintStream("log_" + System.currentTimeMillis() + ".txt");
+        PrintStream fileOutPutStream = new PrintStream("log/log_" + System.currentTimeMillis() + ".txt");
         RestAssured.filters(new RequestLoggingFilter(fileOutPutStream), new ResponseLoggingFilter(fileOutPutStream));
 
         requestSpecification = RestAssured.given();
