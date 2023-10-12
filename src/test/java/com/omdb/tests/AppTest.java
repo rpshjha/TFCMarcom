@@ -1,7 +1,8 @@
 package com.omdb.tests;
 
 import com.omdb.pojo.ErrorResponse;
-import com.omdb.pojo.RootResponse;
+import com.omdb.pojo.GetMovieByIdOrTitle;
+import com.omdb.pojo.FilterBySeason;
 import com.omdb.pojo.SearchResponse;
 import com.omdb.utils.ReadJson;
 import io.qameta.allure.*;
@@ -14,6 +15,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static com.omdb.OMDBParams.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -26,15 +28,15 @@ public class AppTest extends BaseTest {
     @Test(description = "Verify that the OMDB API correctly searches for movies based on both the movie title and release year provided in the search query.")
     @Story("Search by Title and Year")
     @Severity(SeverityLevel.NORMAL)
-    @Description("verify the functionality of a search feature that allows users to search movie by Title")
+    @Description("Verify the functionality of a search feature that allows users to search movie by Title")
     void shouldSearchByTitleAndYear() {
 
-        RootResponse response = RestAssured.given(requestSpecification)
+        GetMovieByIdOrTitle response = RestAssured.given(requestSpecification)
                 .queryParam(getMovieByIdOrTitle, "Oppenheimer")
                 .queryParam(yearOfRelease, 2023)
                 .get()
                 .then().spec(responseSpecification)
-                .extract().response().as(RootResponse.class);
+                .extract().response().as(GetMovieByIdOrTitle.class);
 
         Assert.assertTrue(response.getTitle().contains("Oppen"), "expected response to contain provided title and year");
         Assert.assertTrue(response.getYear().contains("2023"), "expected response to contain provided title and year");
@@ -43,23 +45,23 @@ public class AppTest extends BaseTest {
     @Test(description = "Verify that the OMDB API successfully retrieves detailed movie information when an IMDb ID is provided in the search query.")
     @Story("Search by ID")
     @Severity(SeverityLevel.NORMAL)
-    @Description("verify the functionality of a search feature that allows users to search movie by OMDB ID")
+    @Description("Verify the functionality of a search feature that allows users to search movie by OMDB ID")
     void shouldSearchById() {
 
-        RootResponse byIdOrTitle = RestAssured.given(requestSpecification)
+        GetMovieByIdOrTitle byIdOrTitle = RestAssured.given(requestSpecification)
                 .queryParam(getMovieByIdOrTitle, "Oppenheimer")
                 .get()
                 .then().spec(responseSpecification)
-                .extract().response().as(RootResponse.class);
+                .extract().response().as(GetMovieByIdOrTitle.class);
 
         String imdbID = byIdOrTitle.getImdbID();
         assertNotNull(imdbID);
 
-        RootResponse bySearch = RestAssured.given(requestSpecification)
+        GetMovieByIdOrTitle bySearch = RestAssured.given(requestSpecification)
                 .queryParam(getMovieByaValidIMDbID, imdbID)
                 .get()
                 .then().spec(responseSpecification)
-                .extract().response().as(RootResponse.class);
+                .extract().response().as(GetMovieByIdOrTitle.class);
 
         Assert.assertEquals(byIdOrTitle.getTitle(), bySearch.getTitle(), "expected search api to contain searched IMDB Id in results");
     }
@@ -67,7 +69,7 @@ public class AppTest extends BaseTest {
     @Test(description = "Verify that the OMDB API successfully searches for movies based on a keyword provided in the search query.")
     @Story("Search by keyword")
     @Severity(SeverityLevel.NORMAL)
-    @Description("verify the functionality of a search feature that allows users to search movie by Keyword")
+    @Description("Verify the functionality of a search feature that allows users to search movie by Keyword")
     void shouldSearchByKeyword() {
 
         SearchResponse searchByKeyword = RestAssured.given(requestSpecification)
@@ -85,7 +87,7 @@ public class AppTest extends BaseTest {
     @Test(dataProvider = "getType", description = "Verify that the OMDB API correctly filters movies by type when a type filter is applied.")
     @Story("Filter by Type")
     @Severity(SeverityLevel.NORMAL)
-    @Description("verify the functionality of a OMDB API to filter movie title by type")
+    @Description("Verify the functionality of a OMDB API to filter movie title by type")
     void shouldFilterByType(String type) {
 
         SearchResponse searchByKeyword = RestAssured.given(requestSpecification)
@@ -109,7 +111,7 @@ public class AppTest extends BaseTest {
     @Test(description = "Verify that the OMDB API provides different search results when users navigate between the first and last pages of search results, demonstrating correct pagination behavior.")
     @Story("Search Pagination")
     @Severity(SeverityLevel.NORMAL)
-    @Description("verify the Pagination functionality of a OMDB API")
+    @Description("Verify the Pagination functionality of a OMDB API")
     void verifyPagination() {
 
         SearchResponse searchOnFirstPage = RestAssured.given(requestSpecification)
@@ -133,22 +135,22 @@ public class AppTest extends BaseTest {
     @Test(description = "Verify that the OMDB API successfully returns the plot of a movie when the 'plot' parameter is provided in the request.")
     @Story("Should Return Plot Based On Param")
     @Severity(SeverityLevel.NORMAL)
-    @Description("verify the functionality of a OMDB API to Return Plot Based On Param")
+    @Description("Verify the functionality of a OMDB API to Return Plot Based On Param")
     void shouldReturnPlotBasedOnParam() {
 
-        RootResponse shortPlot = RestAssured.given(requestSpecification)
+        GetMovieByIdOrTitle shortPlot = RestAssured.given(requestSpecification)
                 .queryParam(getMovieByIdOrTitle, "Batman")
                 .queryParam(returnShortOrFullPlot, "short")
                 .get()
                 .then().spec(responseSpecification)
-                .extract().response().as(RootResponse.class);
+                .extract().response().as(GetMovieByIdOrTitle.class);
 
-        RootResponse fullPlot = RestAssured.given(requestSpecification)
+        GetMovieByIdOrTitle fullPlot = RestAssured.given(requestSpecification)
                 .queryParam(getMovieByIdOrTitle, "Batman")
                 .queryParam(returnShortOrFullPlot, "full")
                 .get()
                 .then().spec(responseSpecification)
-                .extract().response().as(RootResponse.class);
+                .extract().response().as(GetMovieByIdOrTitle.class);
 
         Assert.assertTrue(fullPlot.getPlot().length() > shortPlot.getPlot().length(), "expected full plot length too be greater than short plot length");
     }
@@ -156,7 +158,7 @@ public class AppTest extends BaseTest {
     @Test(description = "Verify that the OMDB API enforces the requirement for an API key and denies access to unauthorized requests without a valid key.")
     @Story("Should Return Error Without API Key")
     @Severity(SeverityLevel.NORMAL)
-    @Description("verify that OMDB Api Should Return Error Without API Key")
+    @Description("Verify that OMDB Api Should Return Error Without API Key")
     public void shouldNotGetResponseWithoutApiKey() {
 
         ErrorResponse response = RestAssured.given()
@@ -172,7 +174,7 @@ public class AppTest extends BaseTest {
     @Test(description = "Verify that the OMDB API appropriately handles and responds with an error message when an invalid or non-existent search query is submitted.")
     @Story("Should Get Error for invalid Omdb ID")
     @Severity(SeverityLevel.CRITICAL)
-    @Description("verify that OMDB Api Should Return Error for a invalid OMDB ID")
+    @Description("Verify that OMDB Api Should Return Error for a invalid OMDB ID")
     void shouldGetErrorForInvalidSearch() {
 
         ErrorResponse response = RestAssured.given(requestSpecification)
@@ -239,7 +241,7 @@ public class AppTest extends BaseTest {
     @Test(description = "Verify that the OMDB API appropriately handles requests where neither IMDb ID nor a movie title is provided, and returns an error response.")
     @Story("Should Return Error Without A valid IMDb ID or Movie title")
     @Severity(SeverityLevel.TRIVIAL)
-    @Description("verify that OMDB Api Should Return Error Without A valid IMDb ID or Movie title")
+    @Description("Verify that OMDB Api Should Return Error Without A valid IMDb ID or Movie title")
     public void shouldNotGetResponseWithoutIMDbIDOrMovieTitle() {
 
         ErrorResponse response = RestAssured.given(requestSpecification)
@@ -250,6 +252,33 @@ public class AppTest extends BaseTest {
                 .extract().response().as(ErrorResponse.class);
 
         Assert.assertTrue(response.getError().contains("Incorrect IMDb ID."), "expected Incorrect IMDb ID. error message");
+    }
+
+    @Test(description = "Verify that the OMDB API successfully retrieves information about a specific season of a TV series.")
+    @Story("shouldFilterResultsBasedOnSpecificSeason")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that the OMDB API successfully retrieves information about a specific season of a TV series.")
+    public void shouldFilterResultsBasedOnSpecificSeason() {
+
+        GetMovieByIdOrTitle getMovieByIdOrTitle = RestAssured.given(requestSpecification)
+                .queryParam(getMovieByaValidIMDbID, "tt0944947")
+                .get(ReadJson.get("base-uri"))
+                .then()
+                .spec(responseSpecification)
+                .extract().response().as(GetMovieByIdOrTitle.class);
+
+        String totalSeason = getMovieByIdOrTitle.getTotalSeasons();
+        String seasonToFilter = String.valueOf(new Random().nextInt(1, Integer.parseInt(totalSeason)));
+
+        FilterBySeason filterBySeason = RestAssured.given(requestSpecification)
+                .queryParam(getMovieByaValidIMDbID, "tt0944947")
+                .queryParam("Season", seasonToFilter)
+                .get(ReadJson.get("base-uri"))
+                .then()
+                .spec(responseSpecification)
+                .extract().response().as(FilterBySeason.class);
+
+        Assert.assertEquals(filterBySeason.getSeason(), seasonToFilter, "expected filtered season in the response");
     }
 
     @DataProvider(name = "getType")

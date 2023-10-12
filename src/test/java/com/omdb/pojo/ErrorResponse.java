@@ -7,9 +7,9 @@ import lombok.Data;
 public class ErrorResponse {
 
     @JsonProperty("Response")
-    public String response;
+    private String response;
     @JsonProperty("Error")
-    public String error;
+    private String error;
 
 }
 

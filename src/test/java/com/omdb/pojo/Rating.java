@@ -7,7 +7,7 @@ import lombok.Data;
 public class Rating {
 
     @JsonProperty("Source")
-    public String source;
+    private String source;
     @JsonProperty("Value")
-    public String value;
+    private String value;
 }

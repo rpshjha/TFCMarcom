@@ -11,10 +11,10 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class SearchResponse {
     @JsonProperty("Search")
-    public List<Search> search;
+    private List<Search> search;
     @JsonProperty("totalResults")
-    public String totalResults;
+    private String totalResults;
     @JsonProperty("Response")
-    public String response;
+    private String response;
 
 }
