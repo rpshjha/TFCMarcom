@@ -31,7 +31,6 @@ public class AppTest extends BaseTest {
                 .queryParam(yearOfRelease, 2023)
                 .get()
                 .then().spec(responseSpecification)
-                .and()
                 .extract().response().as(RootResponse.class);
 
         Assert.assertTrue(response.getTitle().contains("Oppen"));
