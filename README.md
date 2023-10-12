@@ -47,6 +47,9 @@ For Windows, Allure is available from the Scoop commandline-installer. To instal
     
     scoop install allure
 
+Default TestNG reports can be accessed at 
+
+    /TFCMarcom/target/surefire-reports/emailable-report.html
 
 ## Logs
 
