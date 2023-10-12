@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 
 import static com.omdb.OMDBParams.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.testng.Assert.assertNotNull;
 
 @Epic("OMDB API Integration Tests")
@@ -233,6 +234,22 @@ public class AppTest extends BaseTest {
                     Assert.assertEquals(actualContentType, data, "expected response content type to be " + data);
                 }
         );
+    }
+
+    @Test
+    @Story("Should Return Error Without A valid IMDb ID or Movie title")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("verify that OMDB Api Should Return Error Without A valid IMDb ID or Movie title")
+    public void shouldNotGetResponseWithoutIMDbIDOrMovieTitle() {
+
+        ErrorResponse response = RestAssured.given(requestSpecification)
+                .get(ReadJson.get("base-uri"))
+                .then()
+                .assertThat().statusCode(is(200))
+                .spec(responseSpecification)
+                .extract().response().as(ErrorResponse.class);
+
+        Assert.assertTrue(response.getError().contains("Incorrect IMDb ID."), "expected Incorrect IMDb ID. error message");
     }
 
     @DataProvider(name = "getType")
