@@ -162,7 +162,7 @@ public class AppTest extends BaseTest {
     public void shouldNotGetResponseWithoutApiKey() {
 
         ErrorResponse response = RestAssured.given()
-                .queryParam("t", "Harry Potter")
+                .queryParam(getMovieByIdOrTitle, "Harry Potter")
                 .get(ReadJson.get("base-uri"))
                 .then()
                 .statusCode(401)
