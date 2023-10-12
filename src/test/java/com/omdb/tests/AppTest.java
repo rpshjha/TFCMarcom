@@ -26,9 +26,9 @@ import static org.testng.Assert.assertNotNull;
 public class AppTest extends BaseTest {
 
     @Test(description = "Verify that the OMDB API correctly searches for movies based on both the movie title and release year provided in the search query.")
-    @Story("Search by Title and Year")
+    @Story("Search Functionality Verification")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify the functionality of a search feature that allows users to search movie by Title")
+    @Description("Verify the functionality of a search feature that allows users to search movies by Title")
     void shouldSearchByTitleAndYear() {
 
         GetMovieByIdOrTitle response = RestAssured.given(requestSpecification)
@@ -43,7 +43,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API successfully retrieves detailed movie information when an IMDb ID is provided in the search query.")
-    @Story("Search by ID")
+    @Story("Search Functionality Verification")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify the functionality of a search feature that allows users to search movie by OMDB ID")
     void shouldSearchById() {
@@ -67,9 +67,9 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API successfully searches for movies based on a keyword provided in the search query.")
-    @Story("Search by keyword")
+    @Story("Search Functionality Verification")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify the functionality of a search feature that allows users to search movie by Keyword")
+    @Description("Verify the functionality of a search feature that allows users to search movies by Keyword")
     void shouldSearchByKeyword() {
 
         SearchResponse searchByKeyword = RestAssured.given(requestSpecification)
@@ -85,9 +85,9 @@ public class AppTest extends BaseTest {
     }
 
     @Test(dataProvider = "getType", description = "Verify that the OMDB API correctly filters movies by type when a type filter is applied.")
-    @Story("Filter by Type")
+    @Story("Filtering and Pagination")
     @Severity(SeverityLevel.NORMAL)
-    @Description("Verify the functionality of a OMDB API to filter movie title by type")
+    @Description("Verify the functionality of a OMDB API to filter movie title or by type")
     void shouldFilterByType(String type) {
 
         SearchResponse searchByKeyword = RestAssured.given(requestSpecification)
@@ -109,7 +109,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API provides different search results when users navigate between the first and last pages of search results, demonstrating correct pagination behavior.")
-    @Story("Search Pagination")
+    @Story("Filtering and Pagination")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify the Pagination functionality of a OMDB API")
     void verifyPagination() {
@@ -133,7 +133,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API successfully returns the plot of a movie when the 'plot' parameter is provided in the request.")
-    @Story("Should Return Plot Based On Param")
+    @Story("TV Series Season Information Retrieval")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify the functionality of a OMDB API to Return Plot Based On Param")
     void shouldReturnPlotBasedOnParam() {
@@ -156,7 +156,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API enforces the requirement for an API key and denies access to unauthorized requests without a valid key.")
-    @Story("Should Return Error Without API Key")
+    @Story("Error Handling and Schema Validation")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that OMDB Api Should Return Error Without API Key")
     public void shouldNotGetResponseWithoutApiKey() {
@@ -172,7 +172,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API appropriately handles and responds with an error message when an invalid or non-existent search query is submitted.")
-    @Story("Should Get Error for invalid Omdb ID")
+    @Story("Error Handling and Schema Validation")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Verify that OMDB Api Should Return Error for a invalid OMDB ID")
     void shouldGetErrorForInvalidSearch() {
@@ -187,7 +187,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API returns movie data in compliance with the predefined schema when getting movie by IMDb ID or Title.")
-    @Story("Validate Movies by ID or Title API Schema")
+    @Story("Error Handling and Schema Validation")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that the API response conforms to the schema without any validation errors")
     void validateMoviesByIdOrTitleAPISchema() {
@@ -202,7 +202,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API returns movie data in compliance with the predefined schema when searching by Movie Title")
-    @Story("Validate Search API Schema")
+    @Story("Error Handling and Schema Validation")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that the API response conforms to the schema without any validation errors")
     void validateSearchAPISchema() {
@@ -217,7 +217,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = " Verify that the OMDB API correctly responds with either XML or JSON format based on the 'type' query parameter provided in the request.")
-    @Story("validateResponseTypeToBe")
+    @Story("Filtering and Pagination")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that the API can return The data type as JSON and XML both")
     void validateResponseTypeToBe() {
@@ -239,7 +239,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API appropriately handles requests where neither IMDb ID nor a movie title is provided, and returns an error response.")
-    @Story("Should Return Error Without A valid IMDb ID or Movie title")
+    @Story("Error Handling and Schema Validation")
     @Severity(SeverityLevel.TRIVIAL)
     @Description("Verify that OMDB Api Should Return Error Without A valid IMDb ID or Movie title")
     public void shouldNotGetResponseWithoutIMDbIDOrMovieTitle() {
@@ -255,7 +255,7 @@ public class AppTest extends BaseTest {
     }
 
     @Test(description = "Verify that the OMDB API successfully retrieves information about a specific season of a TV series.")
-    @Story("shouldFilterResultsBasedOnSpecificSeason")
+    @Story("TV Series Season Information Retrieval")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that the OMDB API successfully retrieves information about a specific season of a TV series.")
     public void shouldFilterResultsBasedOnSpecificSeason() {
