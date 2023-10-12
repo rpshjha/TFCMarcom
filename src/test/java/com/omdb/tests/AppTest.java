@@ -3,15 +3,17 @@ package com.omdb.tests;
 import com.omdb.pojo.ErrorResponse;
 import com.omdb.pojo.RootResponse;
 import com.omdb.pojo.SearchResponse;
+import com.omdb.utils.ReadJson;
 import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
-import com.omdb.utils.ReadJson;
 import org.hamcrest.MatcherAssert;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.util.Arrays;
 
 import static com.omdb.OMDBParams.*;
 import static org.testng.Assert.assertNotNull;
@@ -209,6 +211,28 @@ public class AppTest extends BaseTest {
                 .extract().response();
 
         MatcherAssert.assertThat(response.body().asString(), JsonSchemaValidator.matchesJsonSchema(getResource("searchByTitle.json")));
+    }
+
+    @Test(description = "validateResponseTypeToBeXmlOrJsonBasedOnQueryParam")
+    @Story("validateResponseTypeToBe")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that the API can return The data type as JSON and XML both")
+    void validateResponseTypeToBe() {
+
+        Arrays.stream(new String[]{"json", "xml"}).forEach(data ->
+                {
+                    Response response = RestAssured.given(requestSpecification)
+                            .queryParam(getMovieByIdOrTitle, "Titanic")
+                            .queryParam(theDataTypeToReturn, data)
+                            .get()
+                            .then().spec(responseSpecification)
+                            .extract().response();
+
+                    String actualContentType = response.getContentType().substring(response.getContentType().lastIndexOf("/") + 1, response.getContentType().lastIndexOf(";")).trim();
+
+                    Assert.assertEquals(actualContentType, data, "expected response content type to be " + data);
+                }
+        );
     }
 
     @DataProvider(name = "getType")

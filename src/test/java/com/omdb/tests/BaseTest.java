@@ -1,13 +1,12 @@
 package com.omdb.tests;
 
+import com.omdb.utils.ReadJson;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.hamcrest.Matchers;
-import com.omdb.utils.ReadJson;
 import org.testng.annotations.BeforeTest;
 
 import java.io.File;
@@ -31,7 +30,6 @@ public class BaseTest {
         requestSpecification.param("apikey", ReadJson.get("api-key"));
 
         responseSpecification = RestAssured.expect();
-        responseSpecification.contentType(ContentType.JSON);
         responseSpecification.statusCode(200);
         responseSpecification.time(Matchers.lessThan(5000L));
         responseSpecification.statusLine("HTTP/1.1 200 OK");
