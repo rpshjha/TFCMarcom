@@ -27,14 +27,14 @@ public class AppTest extends BaseTest {
     void shouldSearchByTitleAndYear() {
 
         RootResponse response = RestAssured.given(requestSpecification)
-                .queryParam(movieTitleToSearchForByTitle, "Oppenheimer")
+                .queryParam(getMovieByIdOrTitle, "Oppenheimer")
                 .queryParam(yearOfRelease, 2023)
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response().as(RootResponse.class);
 
-        Assert.assertTrue(response.getTitle().contains("Oppen"));
-        Assert.assertTrue(response.getYear().contains("2023"));
+        Assert.assertTrue(response.getTitle().contains("Oppen"), "expected response to contain provided title and year");
+        Assert.assertTrue(response.getYear().contains("2023"), "expected response to contain provided title and year");
     }
 
     @Test
@@ -44,7 +44,7 @@ public class AppTest extends BaseTest {
     void shouldSearchById() {
 
         RootResponse byIdOrTitle = RestAssured.given(requestSpecification)
-                .queryParam(movieTitleToSearchForByTitle, "Oppenheimer")
+                .queryParam(getMovieByIdOrTitle, "Oppenheimer")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response().as(RootResponse.class);
@@ -53,12 +53,12 @@ public class AppTest extends BaseTest {
         assertNotNull(imdbID);
 
         RootResponse bySearch = RestAssured.given(requestSpecification)
-                .queryParam(aValidIMDbID, imdbID)
+                .queryParam(getMovieByaValidIMDbID, imdbID)
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response().as(RootResponse.class);
 
-        Assert.assertEquals(byIdOrTitle.getTitle(), bySearch.getTitle());
+        Assert.assertEquals(byIdOrTitle.getTitle(), bySearch.getTitle(), "expected search api to contain searched IMDB Id in results");
     }
 
     @Test
@@ -68,7 +68,7 @@ public class AppTest extends BaseTest {
     void shouldSearchByKeyword() {
 
         SearchResponse searchByKeyword = RestAssured.given(requestSpecification)
-                .param(movieTitleToSearchForByKeyword, "case")
+                .param(searchMovieByTitle, "case")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response().as(SearchResponse.class);
@@ -76,7 +76,7 @@ public class AppTest extends BaseTest {
         boolean containsKeyword = searchByKeyword.getSearch().stream()
                 .allMatch(search -> search.getTitle().toLowerCase().contains("case".toLowerCase()));
 
-        Assert.assertTrue(containsKeyword);
+        Assert.assertTrue(containsKeyword, "expected search api to contain the keyword in result");
     }
 
     @Test(dataProvider = "getType")
@@ -86,7 +86,7 @@ public class AppTest extends BaseTest {
     void shouldFilterByType(String type) {
 
         SearchResponse searchByKeyword = RestAssured.given(requestSpecification)
-                .queryParam(movieTitleToSearchForByKeyword, "episode")
+                .queryParam(searchMovieByTitle, "episode")
                 .queryParam(typeOfResultToReturn, type)
                 .get()
                 .then().spec(responseSpecification)
@@ -100,7 +100,7 @@ public class AppTest extends BaseTest {
         boolean isOfType = searchByKeyword.getSearch().stream()
                 .allMatch(search -> search.getType().toLowerCase().contains(type.toLowerCase()));
 
-        Assert.assertTrue(isOfType);
+        Assert.assertTrue(isOfType, "expected type to be " + type);
     }
 
     @Test(description = "verify that search result should be different on first and last page")
@@ -110,7 +110,7 @@ public class AppTest extends BaseTest {
     void verifyPagination() {
 
         SearchResponse searchOnFirstPage = RestAssured.given(requestSpecification)
-                .queryParam(movieTitleToSearchForByKeyword, "Batman")
+                .queryParam(searchMovieByTitle, "Batman")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response().as(SearchResponse.class);
@@ -118,13 +118,13 @@ public class AppTest extends BaseTest {
         int lastPage = Math.abs(Integer.parseInt(searchOnFirstPage.getTotalResults()) / 10) + 1;
 
         SearchResponse searchOnLastPage = RestAssured.given(requestSpecification)
-                .queryParam(movieTitleToSearchForByKeyword, "Batman")
+                .queryParam(searchMovieByTitle, "Batman")
                 .queryParam(pageNumberToReturn, lastPage)
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response().as(SearchResponse.class);
 
-        Assert.assertNotEquals(searchOnLastPage.getSearch().get(0).getImdbID(), searchOnFirstPage.getSearch().get(0).getImdbID());
+        Assert.assertNotEquals(searchOnLastPage.getSearch().get(0).getImdbID(), searchOnFirstPage.getSearch().get(0).getImdbID(), "expected different content for separate pages");
     }
 
     @Test
@@ -134,20 +134,20 @@ public class AppTest extends BaseTest {
     void shouldReturnPlotBasedOnParam() {
 
         RootResponse shortPlot = RestAssured.given(requestSpecification)
-                .queryParam(movieTitleToSearchForByTitle, "Batman")
+                .queryParam(getMovieByIdOrTitle, "Batman")
                 .queryParam(returnShortOrFullPlot, "short")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response().as(RootResponse.class);
 
         RootResponse fullPlot = RestAssured.given(requestSpecification)
-                .queryParam(movieTitleToSearchForByTitle, "Batman")
+                .queryParam(getMovieByIdOrTitle, "Batman")
                 .queryParam(returnShortOrFullPlot, "full")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response().as(RootResponse.class);
 
-        Assert.assertTrue(fullPlot.getPlot().length() > shortPlot.getPlot().length());
+        Assert.assertTrue(fullPlot.getPlot().length() > shortPlot.getPlot().length(), "expected full plot length too be greater than short plot length");
     }
 
     @Test
@@ -163,7 +163,7 @@ public class AppTest extends BaseTest {
                 .statusCode(401)
                 .extract().response().as(ErrorResponse.class);
 
-        Assert.assertTrue(response.getError().contains("No API key provided."));
+        Assert.assertTrue(response.getError().contains("No API key provided."), "expected No API Key Provided error message");
     }
 
     @Test
@@ -173,7 +173,7 @@ public class AppTest extends BaseTest {
     void shouldGetErrorForInvalidSearch() {
 
         ErrorResponse response = RestAssured.given(requestSpecification)
-                .queryParam(aValidIMDbID, "tt00000000")
+                .queryParam(getMovieByaValidIMDbID, "tt00000000")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response().as(ErrorResponse.class);
@@ -188,7 +188,7 @@ public class AppTest extends BaseTest {
     void validateMoviesByIdOrTitleAPISchema() {
 
         Response response = RestAssured.given(requestSpecification)
-                .queryParam(movieTitleToSearchForByTitle, "Oppenheimer")
+                .queryParam(getMovieByIdOrTitle, "Oppenheimer")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response();
@@ -203,7 +203,7 @@ public class AppTest extends BaseTest {
     void validateSearchAPISchema() {
 
         Response response = RestAssured.given(requestSpecification)
-                .queryParam(movieTitleToSearchForByKeyword, "Oppenheimer")
+                .queryParam(searchMovieByTitle, "Oppenheimer")
                 .get()
                 .then().spec(responseSpecification)
                 .extract().response();
