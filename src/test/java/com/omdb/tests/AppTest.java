@@ -21,8 +21,8 @@ import static com.omdb.OMDBParams.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.testng.Assert.assertNotNull;
 
-@Epic("OMDB API Integration Tests")
-@Feature("Verify Basic Search Operations on API")
+@Epic("Enhance OMDB API Usability and Reliability")
+@Feature("OMDB API Functionality Verification")
 public class AppTest extends BaseTest {
 
     @Test(description = "Verify that the OMDB API correctly searches for movies based on both the movie title and release year provided in the search query.")
