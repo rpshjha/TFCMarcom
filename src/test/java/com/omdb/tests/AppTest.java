@@ -1,4 +1,4 @@
-package org.omdb.tests;
+package com.omdb.tests;
 
 import com.omdb.pojo.ErrorResponse;
 import com.omdb.pojo.RootResponse;
@@ -6,8 +6,9 @@ import com.omdb.pojo.SearchResponse;
 import io.qameta.allure.*;
 import io.restassured.RestAssured;
 import io.restassured.module.jsv.JsonSchemaValidator;
-import io.restassured.response.ValidatableResponse;
-import org.omdb.utils.ReadJson;
+import io.restassured.response.Response;
+import com.omdb.utils.ReadJson;
+import org.hamcrest.MatcherAssert;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -15,7 +16,7 @@ import org.testng.annotations.Test;
 import static com.omdb.OMDBParams.*;
 import static org.testng.Assert.assertNotNull;
 
-@Epic("OMDB API Test")
+@Epic("OMDB API Integration Tests")
 @Feature("Verify Basic Search Operations on API")
 public class AppTest extends BaseTest {
 
@@ -25,18 +26,13 @@ public class AppTest extends BaseTest {
     @Description("verify the functionality of a search feature that allows users to search movie by Title")
     void shouldSearchByTitleAndYear() {
 
-        ValidatableResponse validatableResponse = RestAssured.given(requestSpecification)
+        RootResponse response = RestAssured.given(requestSpecification)
                 .queryParam(movieTitleToSearchForByTitle, "Oppenheimer")
                 .queryParam(yearOfRelease, 2023)
                 .get()
                 .then().spec(responseSpecification)
                 .and()
-                .body(JsonSchemaValidator.matchesJsonSchema(getResource("searchByIdResponse.json")));
-
-        RootResponse response = validatableResponse
-                .extract()
-                .response()
-                .as(RootResponse.class);
+                .extract().response().as(RootResponse.class);
 
         Assert.assertTrue(response.getTitle().contains("Oppen"));
         Assert.assertTrue(response.getYear().contains("2023"));
@@ -173,7 +169,7 @@ public class AppTest extends BaseTest {
 
     @Test
     @Story("Should Get Error for invalid Omdb ID")
-    @Severity(SeverityLevel.NORMAL)
+    @Severity(SeverityLevel.CRITICAL)
     @Description("verify that OMDB Api Should Return Error for a invalid OMDB ID")
     void shouldGetErrorForInvalidSearch() {
 
@@ -184,6 +180,36 @@ public class AppTest extends BaseTest {
                 .extract().response().as(ErrorResponse.class);
 
         Assert.assertTrue(response.getError().contains("Error getting data."), "Error getting data");
+    }
+
+    @Test(description = "validateMoviesByIdOrTitleAPISchema")
+    @Story("Validate Movies by ID or Title API Schema")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that the API response conforms to the schema without any validation errors")
+    void validateMoviesByIdOrTitleAPISchema() {
+
+        Response response = RestAssured.given(requestSpecification)
+                .queryParam(movieTitleToSearchForByTitle, "Oppenheimer")
+                .get()
+                .then().spec(responseSpecification)
+                .extract().response();
+
+        MatcherAssert.assertThat(response.body().asString(), JsonSchemaValidator.matchesJsonSchema(getResource("moviesByIdOrTitle.json")));
+    }
+
+    @Test(description = "validateSearchSchema")
+    @Story("Validate Search API Schema")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that the API response conforms to the schema without any validation errors")
+    void validateSearchAPISchema() {
+
+        Response response = RestAssured.given(requestSpecification)
+                .queryParam(movieTitleToSearchForByKeyword, "Oppenheimer")
+                .get()
+                .then().spec(responseSpecification)
+                .extract().response();
+
+        MatcherAssert.assertThat(response.body().asString(), JsonSchemaValidator.matchesJsonSchema(getResource("searchByTitle.json")));
     }
 
     @DataProvider(name = "getType")

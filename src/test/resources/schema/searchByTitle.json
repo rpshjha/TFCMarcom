@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "$ref": "#/definitions/Welcome3",
+  "$ref": "#/definitions/Welcome9",
   "definitions": {
-    "Welcome3": {
+    "Welcome9": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -25,7 +25,7 @@
         "Search",
         "totalResults"
       ],
-      "title": "Welcome3"
+      "title": "Welcome9"
     },
     "Search": {
       "type": "object",
@@ -45,7 +45,6 @@
         },
         "Poster": {
           "type": "string",
-          "format": "uri",
           "qt-uri-protocols": [
             "https"
           ],
@@ -66,6 +65,7 @@
     "Type": {
       "type": "string",
       "enum": [
+        "movie",
         "series"
       ],
       "title": "Type"

@@ -1,4 +1,4 @@
-package org.omdb.tests;
+package com.omdb.tests;
 
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -7,7 +7,7 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.hamcrest.Matchers;
-import org.omdb.utils.ReadJson;
+import com.omdb.utils.ReadJson;
 import org.testng.annotations.BeforeTest;
 
 import java.io.File;

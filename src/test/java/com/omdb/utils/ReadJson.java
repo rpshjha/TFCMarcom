@@ -1,4 +1,4 @@
-package org.omdb.utils;
+package com.omdb.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
