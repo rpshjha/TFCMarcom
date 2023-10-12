@@ -23,7 +23,7 @@ import static org.testng.Assert.assertNotNull;
 @Feature("Verify Basic Search Operations on API")
 public class AppTest extends BaseTest {
 
-    @Test(description = "shouldSearchByTitleAndYear")
+    @Test(description = "Verify that the OMDB API correctly searches for movies based on both the movie title and release year provided in the search query.")
     @Story("Search by Title and Year")
     @Severity(SeverityLevel.NORMAL)
     @Description("verify the functionality of a search feature that allows users to search movie by Title")
@@ -40,7 +40,7 @@ public class AppTest extends BaseTest {
         Assert.assertTrue(response.getYear().contains("2023"), "expected response to contain provided title and year");
     }
 
-    @Test
+    @Test(description = "Verify that the OMDB API successfully retrieves detailed movie information when an IMDb ID is provided in the search query.")
     @Story("Search by ID")
     @Severity(SeverityLevel.NORMAL)
     @Description("verify the functionality of a search feature that allows users to search movie by OMDB ID")
@@ -64,7 +64,7 @@ public class AppTest extends BaseTest {
         Assert.assertEquals(byIdOrTitle.getTitle(), bySearch.getTitle(), "expected search api to contain searched IMDB Id in results");
     }
 
-    @Test
+    @Test(description = "Verify that the OMDB API successfully searches for movies based on a keyword provided in the search query.")
     @Story("Search by keyword")
     @Severity(SeverityLevel.NORMAL)
     @Description("verify the functionality of a search feature that allows users to search movie by Keyword")
@@ -82,7 +82,7 @@ public class AppTest extends BaseTest {
         Assert.assertTrue(containsKeyword, "expected search api to contain the keyword in result");
     }
 
-    @Test(dataProvider = "getType")
+    @Test(dataProvider = "getType", description = "Verify that the OMDB API correctly filters movies by type when a type filter is applied.")
     @Story("Filter by Type")
     @Severity(SeverityLevel.NORMAL)
     @Description("verify the functionality of a OMDB API to filter movie title by type")
@@ -106,7 +106,7 @@ public class AppTest extends BaseTest {
         Assert.assertTrue(isOfType, "expected type to be " + type);
     }
 
-    @Test(description = "verify that search result should be different on first and last page")
+    @Test(description = "Verify that the OMDB API provides different search results when users navigate between the first and last pages of search results, demonstrating correct pagination behavior.")
     @Story("Search Pagination")
     @Severity(SeverityLevel.NORMAL)
     @Description("verify the Pagination functionality of a OMDB API")
@@ -130,7 +130,7 @@ public class AppTest extends BaseTest {
         Assert.assertNotEquals(searchOnLastPage.getSearch().get(0).getImdbID(), searchOnFirstPage.getSearch().get(0).getImdbID(), "expected different content for separate pages");
     }
 
-    @Test
+    @Test(description = "Verify that the OMDB API successfully returns the plot of a movie when the 'plot' parameter is provided in the request.")
     @Story("Should Return Plot Based On Param")
     @Severity(SeverityLevel.NORMAL)
     @Description("verify the functionality of a OMDB API to Return Plot Based On Param")
@@ -153,7 +153,7 @@ public class AppTest extends BaseTest {
         Assert.assertTrue(fullPlot.getPlot().length() > shortPlot.getPlot().length(), "expected full plot length too be greater than short plot length");
     }
 
-    @Test
+    @Test(description = "Verify that the OMDB API enforces the requirement for an API key and denies access to unauthorized requests without a valid key.")
     @Story("Should Return Error Without API Key")
     @Severity(SeverityLevel.NORMAL)
     @Description("verify that OMDB Api Should Return Error Without API Key")
@@ -169,7 +169,7 @@ public class AppTest extends BaseTest {
         Assert.assertTrue(response.getError().contains("No API key provided."), "expected No API Key Provided error message");
     }
 
-    @Test
+    @Test(description = "Verify that the OMDB API appropriately handles and responds with an error message when an invalid or non-existent search query is submitted.")
     @Story("Should Get Error for invalid Omdb ID")
     @Severity(SeverityLevel.CRITICAL)
     @Description("verify that OMDB Api Should Return Error for a invalid OMDB ID")
@@ -184,7 +184,7 @@ public class AppTest extends BaseTest {
         Assert.assertTrue(response.getError().contains("Error getting data."), "Error getting data");
     }
 
-    @Test(description = "validateMoviesByIdOrTitleAPISchema")
+    @Test(description = "Verify that the OMDB API returns movie data in compliance with the predefined schema when getting movie by IMDb ID or Title.")
     @Story("Validate Movies by ID or Title API Schema")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that the API response conforms to the schema without any validation errors")
@@ -199,7 +199,7 @@ public class AppTest extends BaseTest {
         MatcherAssert.assertThat(response.body().asString(), JsonSchemaValidator.matchesJsonSchema(getResource("moviesByIdOrTitle.json")));
     }
 
-    @Test(description = "validateSearchSchema")
+    @Test(description = "Verify that the OMDB API returns movie data in compliance with the predefined schema when searching by Movie Title")
     @Story("Validate Search API Schema")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that the API response conforms to the schema without any validation errors")
@@ -214,7 +214,7 @@ public class AppTest extends BaseTest {
         MatcherAssert.assertThat(response.body().asString(), JsonSchemaValidator.matchesJsonSchema(getResource("searchByTitle.json")));
     }
 
-    @Test(description = "validateResponseTypeToBeXmlOrJsonBasedOnQueryParam")
+    @Test(description = " Verify that the OMDB API correctly responds with either XML or JSON format based on the 'type' query parameter provided in the request.")
     @Story("validateResponseTypeToBe")
     @Severity(SeverityLevel.NORMAL)
     @Description("Verify that the API can return The data type as JSON and XML both")
@@ -236,7 +236,7 @@ public class AppTest extends BaseTest {
         );
     }
 
-    @Test
+    @Test(description = "Verify that the OMDB API appropriately handles requests where neither IMDb ID nor a movie title is provided, and returns an error response.")
     @Story("Should Return Error Without A valid IMDb ID or Movie title")
     @Severity(SeverityLevel.TRIVIAL)
     @Description("verify that OMDB Api Should Return Error Without A valid IMDb ID or Movie title")
