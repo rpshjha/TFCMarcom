@@ -53,3 +53,7 @@ For Windows, Allure is available from the Scoop commandline-installer. To instal
 Logs is generated at the below location
 
     ./log_{currentTimeMills}.txt
+
+## Test Cases 
+
+* [Test Cases](https://github.com/rpshjha/TFCMarcom/blob/master/OMDB_API_TESTCASE.xlsx)
