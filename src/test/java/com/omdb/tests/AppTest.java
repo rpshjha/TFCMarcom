@@ -238,7 +238,7 @@ public class AppTest extends BaseTest {
 
     @Test
     @Story("Should Return Error Without A valid IMDb ID or Movie title")
-    @Severity(SeverityLevel.NORMAL)
+    @Severity(SeverityLevel.TRIVIAL)
     @Description("verify that OMDB Api Should Return Error Without A valid IMDb ID or Movie title")
     public void shouldNotGetResponseWithoutIMDbIDOrMovieTitle() {
 
