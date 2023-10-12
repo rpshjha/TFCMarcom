@@ -1,8 +1,8 @@
 package com.omdb.tests;
 
 import com.omdb.pojo.ErrorResponse;
-import com.omdb.pojo.GetMovieByIdOrTitle;
 import com.omdb.pojo.FilterBySeason;
+import com.omdb.pojo.GetMovieByIdOrTitle;
 import com.omdb.pojo.SearchResponse;
 import com.omdb.utils.ReadJson;
 import io.qameta.allure.*;
@@ -218,7 +218,7 @@ public class AppTest extends BaseTest {
 
     @Test(description = " Verify that the OMDB API correctly responds with either XML or JSON format based on the 'type' query parameter provided in the request.")
     @Story("Filtering and Pagination")
-    @Severity(SeverityLevel.NORMAL)
+    @Severity(SeverityLevel.MINOR)
     @Description("Verify that the API can return The data type as JSON and XML both")
     void validateResponseTypeToBe() {
 
@@ -245,7 +245,7 @@ public class AppTest extends BaseTest {
     public void shouldNotGetResponseWithoutIMDbIDOrMovieTitle() {
 
         ErrorResponse response = RestAssured.given(requestSpecification)
-                .get(ReadJson.get("base-uri"))
+                .get()
                 .then()
                 .assertThat().statusCode(is(200))
                 .spec(responseSpecification)
@@ -262,7 +262,7 @@ public class AppTest extends BaseTest {
 
         GetMovieByIdOrTitle getMovieByIdOrTitle = RestAssured.given(requestSpecification)
                 .queryParam(getMovieByaValidIMDbID, "tt0944947")
-                .get(ReadJson.get("base-uri"))
+                .get()
                 .then()
                 .spec(responseSpecification)
                 .extract().response().as(GetMovieByIdOrTitle.class);
@@ -273,12 +273,28 @@ public class AppTest extends BaseTest {
         FilterBySeason filterBySeason = RestAssured.given(requestSpecification)
                 .queryParam(getMovieByaValidIMDbID, "tt0944947")
                 .queryParam("Season", seasonToFilter)
-                .get(ReadJson.get("base-uri"))
+                .get()
                 .then()
                 .spec(responseSpecification)
                 .extract().response().as(FilterBySeason.class);
 
         Assert.assertEquals(filterBySeason.getSeason(), seasonToFilter, "expected filtered season in the response");
+    }
+
+    @Test(description = "Verify that the Poster API returns Poster")
+    @Story("Poster API")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Verify that the Poster API returns Poster for a valid Movie")
+    public void shouldReturnMoviePosterForAValidMovie() {
+
+        Response response = RestAssured.given(requestSpecification)
+                .queryParam(getMovieByaValidIMDbID, "tt0944947")
+                .get(ReadJson.get("base-uri-poster"))
+                .then()
+                .spec(responseSpecification)
+                .extract().response();
+
+        Assert.assertTrue(response.contentType().contains("image/jpeg"), "expected content type as image/jpeg");
     }
 
     @DataProvider(name = "getType")
