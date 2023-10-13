@@ -59,4 +59,4 @@ Logs is generated at the below location
 
 ## Test Cases 
 
-* [Test Cases]([https://github.com/rpshjha/TFCMarcom/blob/master/OMDB_API_TESTCASE.xlsx](https://docs.google.com/spreadsheets/d/1oLfWtkv9VlvYo50ioyHWvSGMl1Zp_DIeM8KE8JIouHM/edit?usp=sharing)https://docs.google.com/spreadsheets/d/1oLfWtkv9VlvYo50ioyHWvSGMl1Zp_DIeM8KE8JIouHM/edit?usp=sharing)
+* [Test Cases](https://docs.google.com/spreadsheets/d/1oLfWtkv9VlvYo50ioyHWvSGMl1Zp_DIeM8KE8JIouHM/edit?usp=sharing)
