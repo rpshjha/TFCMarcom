@@ -6,11 +6,11 @@ This repository contains automated tests for the [OMDB (Open Movie Database) API
 
 Libraries used
 
-* MAVEN
-* JAVA
-* REST ASSURED
-* TESTNG
-* ALLURE REPORT
+* [MAVEN](https://maven.apache.org/download.cgi)
+* [JAVA]([https://rest-assured.io/](https://www.oracle.com/java/technologies/downloads/#java17)
+* [REST ASSURED](https://rest-assured.io/)
+* [TESTNG](https://testng.org/doc/)
+* [ALLURE REPORT](https://allurereport.org/docs/)
 
 ## Getting Started
 
@@ -72,5 +72,7 @@ Logs is generated at the below location
     ./log/log_{currentTimeMills}.txt
 
 ## Test Cases 
+
+Kindly click on the below link to access test cases
 
 * [Test Cases](https://docs.google.com/spreadsheets/d/1oLfWtkv9VlvYo50ioyHWvSGMl1Zp_DIeM8KE8JIouHM/edit?usp=sharing)
