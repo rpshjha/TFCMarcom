@@ -44,7 +44,7 @@ Above command will run all the API tests
 This project integrates with Allure for test reporting. After running the tests, you can generate interactive and informative test reports using Allure. Open the generated report with:
 
 ```bash
-allure serve target/allure-results
+allure serve
 ```
 
 If you get below error message in running the above command, 
