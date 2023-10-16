@@ -41,3 +41,5 @@ build/
 /allure-results
 
 /log/log_*.txt
+
+/log_*.txt

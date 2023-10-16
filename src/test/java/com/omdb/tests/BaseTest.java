@@ -38,7 +38,7 @@ public class BaseTest {
     }
 
     private void configureRestAssuredLogging() throws FileNotFoundException {
-        PrintStream fileOutputStream = new PrintStream("log/log_" + System.currentTimeMillis() + ".txt");
+        PrintStream fileOutputStream = new PrintStream("log_" + System.currentTimeMillis() + ".txt");
         RestAssured.filters(new RequestLoggingFilter(fileOutputStream), new ResponseLoggingFilter(fileOutputStream));
     }
 
