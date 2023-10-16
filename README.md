@@ -33,9 +33,9 @@ Go to project folder and type:
 
 In command window and run:
 
-    ```bash
-    mvn clean test
-    ```
+```bash
+mvn clean test
+```
 
 Above command will run all the API tests
 
@@ -43,9 +43,9 @@ Above command will run all the API tests
 
 This project integrates with Allure for test reporting. After running the tests, you can generate interactive and informative test reports using Allure. Open the generated report with:
 
-    ```bash
-    allure serve target/allure-results
-    ```
+```bash
+allure serve target/allure-results
+```
 
 If you get below error message in running the above command, 
 
