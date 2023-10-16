@@ -17,7 +17,7 @@ Libraries used
 
 To begin using these automated tests, follow the below steps:
 
-### Prerequisites
+## Prerequisites
 
 Before running the tests, ensure you have the following prerequisites in place.
 
