@@ -1,0 +1,34 @@
+{
+  "api-info": {
+    "api-key": "79a4a58e",
+    "base-uri": "http://www.omdbapi.com/",
+    "base-uri-poster": "http://img.omdbapi.com/"
+  },
+  "movies": [
+    {
+      "title": "Oppenheimer",
+      "year": "2023",
+      "imdbID": "tt15398776"
+    },
+    {
+      "title": "Star Wars: Episode IV - A New Hope",
+      "year": "1977",
+      "imdbID": "tt0076759"
+    },
+    {
+      "title": "Batman Begins",
+      "year": "2005",
+      "imdbID": "tt0372784"
+    },
+    {
+      "title": "Harry Potter and the Deathly Hallows: Part 2",
+      "year": "2011",
+      "imdbID": "tt1201607"
+    },
+    {
+      "title": "Titanic",
+      "year": "1997",
+      "imdbID": "tt0120338"
+    }
+  ]
+}

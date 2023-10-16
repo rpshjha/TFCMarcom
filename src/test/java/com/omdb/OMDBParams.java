@@ -5,8 +5,8 @@ public class OMDBParams {
     private OMDBParams() {
     }
 
-    public static final String getMovieByaValidIMDbID = "i";
-    public static final String getMovieByIdOrTitle = "t";
+    public static final String getMovieByValidIMDbID = "i";
+    public static final String getMovieByTitle = "t";
     public static final String searchMovieByTitle = "s";
     public static final String typeOfResultToReturn = "type";
     public static final String yearOfRelease = "y";
