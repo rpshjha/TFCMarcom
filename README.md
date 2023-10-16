@@ -7,7 +7,7 @@ This repository contains automated tests for the [OMDB (Open Movie Database) API
 Libraries used
 
 * [MAVEN](https://maven.apache.org/download.cgi)
-* [JAVA]([https://rest-assured.io/](https://www.oracle.com/java/technologies/downloads/#java17)
+* [Java 17](https://www.oracle.com/java/technologies/downloads/#java17)
 * [REST ASSURED](https://rest-assured.io/)
 * [TESTNG](https://testng.org/doc/)
 * [ALLURE REPORT](https://allurereport.org/docs/)
