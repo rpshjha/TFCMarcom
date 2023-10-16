@@ -11,6 +11,7 @@ Libraries used
 * [REST ASSURED](https://rest-assured.io/)
 * [TESTNG](https://testng.org/doc/)
 * [ALLURE REPORT](https://allurereport.org/docs/)
+* [LOMBOK](https://projectlombok.org/)
 
 ## Getting Started
 
