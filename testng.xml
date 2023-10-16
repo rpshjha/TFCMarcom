@@ -1,6 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="Test Suite for OMDB API">
 
+    <listeners>
+        <listener class-name="com.omdb.listeners.TestListener"></listener>
+    </listeners>
+
     <test name="OMDB API Tests" parallel="methods" thread-count="5">
         <classes>
             <class name="com.omdb.tests.AppTest"/>

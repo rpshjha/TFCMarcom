@@ -6,9 +6,11 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.Matchers;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 
 import java.io.*;
 
@@ -16,6 +18,8 @@ import static com.omdb.OMDBParams.*;
 import static com.omdb.utils.ReadJson.getApiInfo;
 import static org.hamcrest.CoreMatchers.is;
 
+@Slf4j
+@Listeners(com.omdb.listeners.TestListener.class)
 public class BaseTest {
 
     private RequestSpecification requestSpecification;
