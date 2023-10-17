@@ -18,8 +18,15 @@ pipeline {
 
         stage("Generate Allure Report") {
             steps {
-                sh 'cd allure-results'
-                sh 'allure serve'
+                script {
+                  allure([
+                    includeProperties: false,
+                    jdk: '',
+                    properties: [],
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: 'target/allure-results']]
+                  ])
+                }
             }
         }
     }
