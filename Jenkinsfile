@@ -29,6 +29,13 @@ pipeline {
                 }
             }
         }
+
+        // Add a stage to run 'allure serve'
+        stage('Serve Allure Report') {
+            steps {
+                sh 'allure serve allure-results'
+            }
+        }
     }
 
     post {
