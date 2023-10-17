@@ -10,10 +10,10 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                sh 'echo "Deploying the project"'
-            }
+        stage('Test') {
+             steps {
+                sh 'mvn clean test'
+             }
         }
     }
 
@@ -24,6 +24,11 @@ pipeline {
 
         failure {
             echo 'The pipeline has failed!'
+        }
+    }
+    post {
+        always {
+            sh 'allure serve target/allure-results'
         }
     }
 }
