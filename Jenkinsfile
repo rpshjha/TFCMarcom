@@ -18,12 +18,14 @@ pipeline {
 
         stage("Generate Allure Report") {
             steps {
-                REPORTS.each {
-                    dir(it) {
-                        unstash name: it
+                 script {
+                    REPORTS.each {
+                        dir(it) {
+                            unstash name: it
+                        }
                     }
-                }
-                def resultList = REPORTS.collect { [path:"${it}/target/allure-results"] }
+                    def resultList = REPORTS.collect { [path:"${it}/target/allure-results"] }
+                 }
                 allure commandline: "Allure 2.18.1", includeProperties: false, results: resultList, reportBuildPolicy: "ALWAYS"
             }
         }
