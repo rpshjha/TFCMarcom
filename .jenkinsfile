@@ -1,17 +1,18 @@
 pipeline {
     agent any
-
+    tools {
+          maven 'MAVEN_HOME'
+          jdk 'JAVA_HOME'
+    }
     stages {
         stage('Build') {
             steps {
-                // Add build commands here
                 sh 'echo "Building the project"'
             }
         }
 
         stage('Deploy') {
             steps {
-                // Add deployment commands here
                 sh 'echo "Deploying the project"'
             }
         }
@@ -19,12 +20,10 @@ pipeline {
 
     post {
         success {
-            // Actions to take if the pipeline succeeds
             echo 'The pipeline has succeeded!'
         }
 
         failure {
-            // Actions to take if the pipeline fails
             echo 'The pipeline has failed!'
         }
     }
