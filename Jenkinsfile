@@ -18,6 +18,7 @@ pipeline {
 
         stage("Generate Allure Report") {
             steps {
+                sh 'cd allure-results'
                 sh 'allure serve'
             }
         }
