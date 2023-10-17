@@ -25,8 +25,7 @@ pipeline {
         failure {
             echo 'The pipeline has failed!'
         }
-    }
-    post {
+
         always {
             sh 'allure serve target/allure-results'
         }
