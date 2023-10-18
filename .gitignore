@@ -43,3 +43,5 @@ build/
 /log/log_*.txt
 
 /log_*.txt
+
+*.log

@@ -1,10 +1,10 @@
 package com.omdb.listeners;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-@Slf4j
+@Log4j
 public class TestListener implements ITestListener {
 
     public void onTestStart(ITestResult iTestResult) {

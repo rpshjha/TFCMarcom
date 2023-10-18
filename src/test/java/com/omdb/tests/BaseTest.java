@@ -6,7 +6,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j;
 import org.hamcrest.Matchers;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -18,12 +18,12 @@ import static com.omdb.OMDBParams.*;
 import static com.omdb.utils.ReadJson.getApiInfo;
 import static org.hamcrest.CoreMatchers.is;
 
-@Slf4j
+@Log4j
 @Listeners(com.omdb.listeners.TestListener.class)
 public class BaseTest {
 
-    private RequestSpecification requestSpecification;
-    private ResponseSpecification responseSpecification;
+    private final ThreadLocal<RequestSpecification> requestSpecification = new ThreadLocal<>();
+    private final ThreadLocal<ResponseSpecification> responseSpecification = new ThreadLocal<>();
 
     @BeforeMethod
     void setup() throws IOException {
@@ -37,8 +37,8 @@ public class BaseTest {
 
     @AfterMethod
     void tear() {
-        requestSpecification = null;
-        responseSpecification = null;
+        requestSpecification.remove();
+        responseSpecification.remove();
     }
 
     private void configureRestAssuredLogging() throws FileNotFoundException {
@@ -47,17 +47,17 @@ public class BaseTest {
     }
 
     private void configureRequestSpecification() {
-        requestSpecification = RestAssured.given();
+        requestSpecification.set(RestAssured.given());
 
-        requestSpecification.baseUri(getApiInfo().get("base-uri"));
-        requestSpecification.param("apikey", getApiInfo().get("api-key"));
+        requestSpecification.get().baseUri(getApiInfo().get("base-uri"));
+        requestSpecification.get().param("apikey", getApiInfo().get("api-key"));
     }
 
     private void configureResponseSpecification() {
-        responseSpecification = RestAssured.expect();
-        responseSpecification.statusCode(200);
-        responseSpecification.time(Matchers.lessThan(5000L));
-        responseSpecification.statusLine("HTTP/1.1 200 OK");
+        responseSpecification.set(RestAssured.expect());
+        responseSpecification.get().statusCode(200);
+        responseSpecification.get().time(Matchers.lessThan(5000L));
+        responseSpecification.get().statusLine("HTTP/1.1 200 OK");
     }
 
     protected InputStream getResource(String name) {
@@ -65,99 +65,99 @@ public class BaseTest {
     }
 
     protected Response getMovieByTitle(String title) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(getMovieByTitle, title)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
     protected Response getMovieByTitle(String title, String data) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(getMovieByTitle, title)
                 .queryParam(theDataTypeToReturn, data)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
     protected Response getMovieByTitleAndYear(String title, String year) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(getMovieByTitle, title)
                 .queryParam(yearOfRelease, year)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
     protected Response getMovieByTitleAndPlot(String title, String plot) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(getMovieByTitle, title)
                 .queryParam(returnShortOrFullPlot, plot)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
     protected Response getMovieByIMDBId(String imdbID) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(getMovieByValidIMDbID, imdbID)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
     protected Response getMovieByIMDBId(String imdbID, String seasonToFilter) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(getMovieByValidIMDbID, imdbID)
                 .queryParam("Season", seasonToFilter)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
 
     protected Response searchByKeywordAndReturn(String keyword) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(searchMovieByTitle, keyword)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
     protected Response searchByKeyword(String keyword) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(searchMovieByTitle, keyword)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
     protected Response searchByKeyword(String keyword, String type) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(searchMovieByTitle, keyword)
                 .queryParam(typeOfResultToReturn, type)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
     protected Response searchByKeyword(String keyword, int pageNumber) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(searchMovieByTitle, keyword)
                 .queryParam(pageNumberToReturn, pageNumber)
                 .get()
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
@@ -171,20 +171,20 @@ public class BaseTest {
     }
 
     protected Response sendEmptyRequest() {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .get()
                 .then()
                 .assertThat().statusCode(is(200))
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 
     protected Response getMoviePoster(String imdbID) {
-        return RestAssured.given(requestSpecification)
+        return RestAssured.given(requestSpecification.get())
                 .queryParam(getMovieByValidIMDbID, imdbID)
                 .get(getApiInfo().get("base-uri-poster"))
                 .then()
-                .spec(responseSpecification)
+                .spec(responseSpecification.get())
                 .extract().response();
     }
 }
