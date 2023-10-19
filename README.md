@@ -70,7 +70,7 @@ Default TestNG reports can be accessed at
 
 Logs is generated at the below location
 
-    ./log/log_{currentTimeMills}.txt
+    ./target/logfile.log
 
 ## Test Cases 
 
