@@ -1,8 +1,7 @@
 package com.omdb.tests;
 
+import com.omdb.utils.RALogFilter;
 import io.restassured.RestAssured;
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -12,7 +11,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
 
 import static com.omdb.OMDBParams.*;
 import static com.omdb.utils.ReadJson.getApiInfo;
@@ -26,12 +26,8 @@ public class BaseTest {
     private final ThreadLocal<ResponseSpecification> responseSpecification = new ThreadLocal<>();
 
     @BeforeMethod
-    void setup() throws IOException {
-
-        configureRestAssuredLogging();
-
+    void setup() {
         configureRequestSpecification();
-
         configureResponseSpecification();
     }
 
@@ -41,14 +37,16 @@ public class BaseTest {
         responseSpecification.remove();
     }
 
-    private void configureRestAssuredLogging() throws FileNotFoundException {
-        PrintStream fileOutputStream = new PrintStream("log_" + System.currentTimeMillis() + ".txt");
-        RestAssured.filters(new RequestLoggingFilter(fileOutputStream), new ResponseLoggingFilter(fileOutputStream));
-    }
+//    private void configureRestAssuredLogging() throws FileNotFoundException {
+//        PrintStream fileOutputStream = new PrintStream("log_" + System.currentTimeMillis() + ".txt");
+//        RestAssured.filters(new RequestLoggingFilter(fileOutputStream), new ResponseLoggingFilter(fileOutputStream));
+//        RestAssured.filters(new RestAssuredLogFilter());
+//    }
 
     private void configureRequestSpecification() {
         requestSpecification.set(RestAssured.given());
 
+        requestSpecification.get().filter(new RALogFilter());
         requestSpecification.get().baseUri(getApiInfo().get("base-uri"));
         requestSpecification.get().param("apikey", getApiInfo().get("api-key"));
     }
