@@ -77,3 +77,57 @@ Logs is generated at the below location
 Kindly click on the below link to access test cases
 
 * [Test Cases](https://docs.google.com/spreadsheets/d/1oLfWtkv9VlvYo50ioyHWvSGMl1Zp_DIeM8KE8JIouHM/edit?usp=sharing)
+
+
+
+### Directly you can use this jenkinsFile
+
+Jenkinsfile
+
+```
+    pipeline {
+      agent any
+    
+      tools {
+        maven 'maven'
+      }
+    
+      stages {
+        stage('Build') {
+          steps {
+            git(url: 'https://github.com/rpshjha/TFCMarcom.git', branch: 'master', credentialsId: '')
+          }
+        }
+    
+        stage('Test') {
+          steps {
+            sh 'mvn clean test'
+          }
+        }
+      }
+    
+      post {
+        success {
+          echo 'The pipeline has succeeded!'
+        }
+    
+        failure {
+          echo 'The pipeline has failed!'
+        }
+      }
+    }
+```
+### Overview
+
+This Jenkinsfile defines a simple two-stage pipeline:
+
+Build: Checks out the source code from GitHub and builds the project using Maven.
+Test: Runs the unit tests using Maven.
+Usage
+
+To use this Jenkinsfile, you will need to:
+
+Create a new Jenkins job and select the "Pipeline" project type.
+In the "Pipeline Script" section, paste the contents of the Jenkinsfile.
+Click the "Save" button.
+Once the job is saved, you can start it by clicking the "Build Now" button. The pipeline will run through the Build and Test stages, and will output the results to the console.
